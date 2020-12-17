@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <h2>Nova mensagem</h2>
+    <hr>
+
+    <h4 style="text-align: center;"><a href="index.html">Voltar á página inicial</a></h4>
+
+    <ul>
+        <li>Enviar mensagem</li>
+    </ul>
+
+    <form action="/newmessage" method="post">
+        <input type="hidden" name="name" value="{{.User}}">
+        <label for="remetente">Remetente</label>
+        <input id="remetente" type="text" name="remetente" value="" required />
+        <br>
+        <label for="destinatario">Destinatário</label>
+        <input id="destinatario" type="text" name="destinatario" value="" required />
+        <br>
+        <label for="assunto">Assunto</label>
+        <input id="assunto" type="text" name="assunto" value="" required />
+        <br>
+        <label for="corpo">Corpo</label>
+        <textarea name="corpo" id="corpo" cols="30" rows="10" required></textarea>
+        <br>
+        <input type="submit" value="Enviar">
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <h2 id="title" data-user="{{.User}}">Bem vindo de volta, {{.User}}!</h2>
+    <p>Obs: Por questões de simplificação do trabalho, não foi implementado outros arquivos para armazenar mensagens encaminhadas, mensagens apagadas ou mensagens respondidas.</p>
+    <p>Também não foi implementado flags que apontasse os tipos das mensagens. O objetivo do trabalho foi resumido em simplesmente utilizar os verbos HTTP e montar o trabalho usando a arquitetura REST.</p>
+    <p>É possível visualizar a montagens das rotas e o uso dos verbos HTTP no arquivo "server.go".</p>
+    <hr>
+
+    <h3>Caixa de entrada</h3>
+
+    <h4 style="text-align: center;"><a href="index.html">Voltar á página inicial</a></h4>
+
+    <ul>
+        <li><a href="/sendmessage?name={{.User}}">Enviar mensagem</a></li>
+        <!-- <li><a href="">Listar mensagens</a></li>
+        <li><a href="">Apagar mensagens</a></li>
+        <li><a href="">Abrir mensagem</a></li>
+        <li><a href="">Encaminhar mensagem</a></li>
+        <li><a href="">Responder Mensagem</a></li> -->
+    </ul>
+
+    <h5>Lista de mensagens:</h5>
+
+    {{range .Messages}}
+    <ul>
+        <!-- <li>{{.Remetente}}</li>
+        <li>{{.Destinatario}}</li> -->
+        <li>{{.Assunto}}</li>
+        <!-- <li>{{.Corpo}}</li> -->
+    </ul>
+    <a href="" class="mostrar" data-id="{{.ID}}">Abrir</a>
+    <a href="#" class="deletar" data-id="{{.ID}}">Deletar</a>
+    <a href="" class="encaminhar" data-id="{{.ID}}">Encaminhar</a>
+    <a href="" class="responder" data-id="{{.ID}}">Responder</a>
+    <hr>
+    {{end}}
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <script>
+        $(function () {
+            $(".mostrar").on("click", function () {
+                $(".mostrar").attr("href", "/showmessage?id=" + $(this).data("id") + "&user=" + $("#title").data("user"))
+            });
+
+            $(".encaminhar").on("click", function () {
+                $(".encaminhar").attr("href", "/forwardmessage?id=" + $(this).data("id") + "&user=" + $("#title").data("user"))
+            });
+
+            $(".responder").on("click", function () {
+                $(".responder").attr("href", "/responsemessage?id=" + $(this).data("id") + "&user=" + $("#title").data("user"))
+            });
+
+            $(".deletar").on("click", function (e) {
+                e.preventDefault();
+                var user = $("#title").data("user")
+                $.ajax({
+                    url: '/deletemessage?id=' + $(this).data("id"),
+                    type: 'DELETE',
+                    success: function (result) {
+                        if (result != "-1") {
+                            // tudo ok, atualize a tela dashboard
+                            window.location.href = "http://localhost:8080/confirmdeletemessage?&user=" + user
+                        } else {
+                            alert("Houve um erro na exclusão")
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
